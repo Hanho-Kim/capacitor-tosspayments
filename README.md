@@ -32,7 +32,7 @@ $ npx cap copy
 ### 1. Plugin 모듈 추가하기
 
 ```java
-import kr.iamport.capacitor.IamportCapacitor;
+import glit.capacitor.tosspayments.TossPaymentsPlugin;
 
 public class MainActivity extends BridgeActivity {
     ...

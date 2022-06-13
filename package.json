@@ -58,10 +58,10 @@
   "swiftlint": "@ionic/swiftlint-config",
   "repository": {
     "type": "git",
-    "url": "https://glit.at"
+    "url": "https://github.com/Hanho-Kim/capacitor-tosspayments"
   },
   "bugs": {
-    "url": "https://glit.at/issues"
+    "url": "https://github.com/Hanho-Kim/capacitor-tosspayments/issues"
   },
   "dependencies": {}
 }
