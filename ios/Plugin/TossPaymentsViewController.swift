@@ -16,12 +16,12 @@ class TossPaymentsViewController: UIViewController, WKUIDelegate, WKNavigationDe
     convenience init(call: CAPPluginCall) {
         print("[TossPayments]: init!");
         self.init()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(self.onDidReceiveData(_:)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil)
         
         self.clientKey = call.getString("clientKey")
         self.requestParams = call.getObject("requestParams")
         self.requestParamsStringified = self.objectStringify(data: self.requestParams)
+        self.method = call.getString("method");
         
         
 //        let appScheme = data["app_scheme"]
@@ -44,8 +44,8 @@ class TossPaymentsViewController: UIViewController, WKUIDelegate, WKNavigationDe
     override func viewDidLoad() {
         super.viewDidLoad()
         print("[TossPayments]: viewDidLoad!");
-        
-        let tossPaymentsBundle = Bundle(for: TossPaymentsPlugin.self)
+        self.isModalInPresentation = true
+        let tossPaymentsBundle = Bundle(for: TossPaymentsCapacitor.self)
         let WEBVIEW_PATH = tossPaymentsBundle.url(forResource: "webview_source", withExtension: "html");
         if WEBVIEW_PATH != nil {
             let myRequest = URLRequest(url: WEBVIEW_PATH!)
@@ -86,7 +86,6 @@ class TossPaymentsViewController: UIViewController, WKUIDelegate, WKNavigationDe
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!){
         if (!loadingFinished) {
             print("[TossPayments]: loadingFinished => Call Javascript");
-            
             webView.evaluateJavaScript("var tossPayments = TossPayments('" + self.clientKey + "');")
             webView.evaluateJavaScript("tossPayments.requestPayment('" + self.method + "', " + self.requestParamsStringified + ");")
             

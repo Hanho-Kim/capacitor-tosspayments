@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import glit.capacitor.tosspayments.capacitortosspayments.R;
 
 public class TossPaymentsActivity extends Activity {
     WebView webview;
     TossPaymentsWebViewClient webViewClient;
+    Long waitTime = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +60,18 @@ public class TossPaymentsActivity extends Activity {
         if (webview.canGoBack()) {
             webview.goBack();
         } else {
-            // Finishing the Activity
-            Intent data = new Intent();
-            data.putExtra("url", "");
-            data.putExtra("role", "fail");
-            data.putExtra("onBackPressed", true);
-
-            setResult(TossPaymentsPlugin.REQUEST_CODE, data);
-            finish();
+            if (System.currentTimeMillis() - waitTime >=1500 ) {
+               waitTime = System.currentTimeMillis();
+               Toast.makeText(this,"결제창을 정말 닫으시겠어요 ?",Toast.LENGTH_SHORT).show();
+            } else {
+               // Finishing the Activity
+               Intent data = new Intent();
+               data.putExtra("url", "http://toss-payments-after-fail-url/?code=PAY_PROC_CANCLED_BACK");
+               data.putExtra("role", "fail");
+               data.putExtra("onBackPressed", true);
+               setResult(TossPaymentsPlugin.RESULT_CODE_FOR_BACK, data);
+               finish();
+            }
         }
     }
 
