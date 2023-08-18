@@ -16,7 +16,6 @@ export declare type TRequestParams = {
 };
 export interface TConfiguration {
     clientKey: string;
-    customerKey: string;
 }
 export interface TossPaymentsCapacitorPlugin {
     initialize(options: TConfiguration): Promise<any>;
