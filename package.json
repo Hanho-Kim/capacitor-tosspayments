@@ -1,42 +1,49 @@
 {
   "name": "capacitor-tosspayments",
-  "version": "1.0.1",
-  "description": "Capacitor plugin for toss payments",
+  "version": "2.0.1",
+  "description": "Capacitor plugin v4 for toss payments",
   "main": "dist/plugin.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "scripts": {
+    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
+    "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "lint": "npm run prettier -- --check && npm run swiftlint -- lint",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
     "swiftlint": "node-swiftlint",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build"
   },
-  "author": "Hanho Kim",
+  "author": "NF DREEKY",
   "license": "MIT",
   "devDependencies": {
-    "@capacitor/android": "^2.4.7",
-    "@capacitor/core": "^2.4.7",
-    "@capacitor/ios": "^2.4.7",
-    "@ionic/prettier-config": "^1.0.0",
-    "@ionic/swiftlint-config": "^1.0.0",
+    "@capacitor/android": "^4.7.3",
+    "@capacitor/core": "^4.7.3",
+    "@capacitor/ios": "^4.7.3",
+    "@ionic/eslint-config": "^0.3.0",
+    "@ionic/prettier-config": "^1.0.1",
+    "@ionic/swiftlint-config": "^1.1.2",
     "@rollup/plugin-node-resolve": "^8.1.0",
-    "prettier": "^2.0.5",
-    "prettier-plugin-java": "^0.8.0",
-    "rimraf": "^3.0.0",
-    "rollup": "^2.21.0",
+    "@types/node": "^17.0.41",
+    "eslint": "^7.11.0",
+    "prettier": "~2.2.0",
+    "prettier-plugin-java": "~1.0.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.32.0",
     "swiftlint": "^1.0.1",
-    "typescript": "~3.9.5"
+    "typescript": "~4.0.3"
   },
   "peerDependencies": {
-    "@capacitor/core": "^2.4.7"
+    "@capacitor/core": "^4.7.3"
   },
   "files": [
+    "android/src/main/",
+    "android/build.gradle",
     "dist/",
-    "ios/",
-    "android/",
+    "ios/Plugin/",
+    "ios/Resources/",
     "CapacitorTosspayments.podspec"
   ],
   "keywords": [
@@ -62,6 +69,5 @@
   },
   "bugs": {
     "url": "https://github.com/Hanho-Kim/capacitor-tosspayments/issues"
-  },
-  "dependencies": {}
+  }
 }

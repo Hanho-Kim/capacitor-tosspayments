@@ -5,8 +5,8 @@ import Capacitor
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitorjs.com/docs/plugins/ios
  */
-@objc(TossPaymentsPlugin)
-public class TossPaymentsPlugin: CAPPlugin, TossPaymentsDelegate {
+@objc(TossPaymentsCapacitor)
+public class TossPaymentsCapacitor: CAPPlugin, TossPaymentsDelegate {
     
     var tossPaymentsViewController:TossPaymentsViewController? = nil;
 
@@ -23,7 +23,7 @@ public class TossPaymentsPlugin: CAPPlugin, TossPaymentsDelegate {
             self.tossPaymentsViewController = TossPaymentsViewController(call: call)
 
             self.tossPaymentsViewController?.delegate = self;
-            self.bridge?.viewController.present(self.tossPaymentsViewController!, animated: true, completion: nil)
+            self.bridge?.viewController!.present(self.tossPaymentsViewController!, animated: true, completion: nil)
         }
     }
     

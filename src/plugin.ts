@@ -1,7 +1,6 @@
-import { Plugins } from '@capacitor/core';
 import { TPaymentMethod, TRequestParams } from './definitions';
 
-const { TossPaymentsPlugin } = Plugins;
+import { TossPaymentsCapacitor } from "./index";
 
 
 export class TossPayments {
@@ -16,7 +15,7 @@ export class TossPayments {
   }
 
   echo(options: { value: string }): Promise<{ value: string }> {
-    return TossPaymentsPlugin.echo(options);
+    return TossPaymentsCapacitor.echo(options);
   }
 
   async requestPayment(method: TPaymentMethod, requestParams: TRequestParams, options?: any):Promise<any> {
@@ -37,7 +36,7 @@ export class TossPayments {
     };
 
     if(this._onOverListener) this._onOverListener.remove();
-    this._onOverListener = TossPaymentsPlugin.addListener('tossPaymentsOnOver',({role, url}:{role:string, url:string})=>{
+    this._onOverListener = await TossPaymentsCapacitor.addListener('tossPaymentsOnOver',({role, url}:{role:string, url:string})=>{
       console.log('[Capacitor: TossPaymentsPlugin] onOver:', {role, url});
 
       if(role === 'success'){
@@ -49,7 +48,7 @@ export class TossPayments {
       this._onOverListener.remove(); // Remove Listener
     })
 
-    await TossPaymentsPlugin.startTossPaymentsActivity({
+    await TossPaymentsCapacitor.startTossPaymentsActivity({
       clientKey: this._clientKey,
       method,
       requestParams : _requestParamsSanitizedForTossSDK,

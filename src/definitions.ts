@@ -1,3 +1,6 @@
+import type { PluginListenerHandle } from '@capacitor/core';
+
+
 export type TPaymentMethod = '카드' | '가상계좌' | '휴대폰' | '계좌이체' | '문화상품권' | '게임문화상품권' | '도서문화상품권' | 'CARD' | 'TOSSPAY' | 'VIRTUAL_ACCOUNT' | 'TRANSFER' | 'MOBILE_PHONE' | 'CULTURE_GIFT_CERTIFICATE' | 'BOOK_GIFT_CERTIFICATE' | 'GAME_GIFT_CERTIFICATE';
 export type TRequestParams = {
   amount: number;
@@ -13,15 +16,14 @@ export type TRequestParams = {
   taxFreeAmount?: number;
   cultureExpense?: boolean;
 };
-
-declare module '@capacitor/core' {
-  interface PluginRegistry {
-    TossPaymentsPlugin: TossPaymentsPluginProtocol;
-  }
+export interface TConfiguration {
+  clientKey: string;
 }
+export interface TossPaymentsCapacitorPlugin {
+  // web
+  initialize(options: TConfiguration): Promise<any>;
 
-export interface TossPaymentsPluginProtocol {
-
+  // native
   echo(options: { value: string }): Promise<{ value: string }>;
 
   requestPayment(method:TPaymentMethod, requestParams:TRequestParams, options?:any): Promise<any>;
@@ -31,5 +33,5 @@ export interface TossPaymentsPluginProtocol {
   addListener(
     name: string,
     callback: any,
-  ): any;
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
