@@ -16,7 +16,7 @@ class TossPaymentsViewController: UIViewController, WKUIDelegate, WKNavigationDe
     convenience init(call: CAPPluginCall) {
         print("[TossPayments]: init!");
         self.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onDidReceiveData(_:)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onDidReceiveData(_:)), name: Notification.Name(Notification.Name.capacitorOpenURL.rawValue), object: nil)
         
         self.clientKey = call.getString("clientKey")
         self.requestParams = call.getObject("requestParams")
@@ -44,7 +44,6 @@ class TossPaymentsViewController: UIViewController, WKUIDelegate, WKNavigationDe
     override func viewDidLoad() {
         super.viewDidLoad()
         print("[TossPayments]: viewDidLoad!");
-        self.isModalInPresentation = true
         let tossPaymentsBundle = Bundle(for: TossPaymentsCapacitor.self)
         let WEBVIEW_PATH = tossPaymentsBundle.url(forResource: "webview_source", withExtension: "html");
         if WEBVIEW_PATH != nil {
@@ -52,7 +51,10 @@ class TossPaymentsViewController: UIViewController, WKUIDelegate, WKNavigationDe
             webView.load(myRequest)
         }
     }
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        delegate?.onOver(role: "fail", url: "https://nerdfrenz.com?code=user_close&message=canceled")
+    }
     /* Lifecycle: Url has been changed */
     @available (iOS 8.0, *)
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
