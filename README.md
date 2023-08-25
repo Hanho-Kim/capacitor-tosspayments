@@ -5,7 +5,7 @@
 토스페이먼츠를 Ionic / Capacitor 환경에서 사용할 수 있도록 만든 플러그인입니다
 
 ## 지원정보
-* 현재 이 플러그인은 Capacitor v4 지원합니다.
+* 현재 이 플러그인은 Capacitor v5 지원합니다.
 * 현재 이 플러그인은 토스페이먼츠의 일반결제 내 `requestPayment()` 기능만 제공합니다.
 
 
@@ -29,21 +29,7 @@ $ npx cap copy
 
 #### 안드로이드 설정하기
 
-### 1. Plugin 모듈 추가하기
-
-```java
-import glit.capacitor.tosspayments.TossPaymentsPlugin;
-
-public class MainActivity extends BridgeActivity {
-    ...
-    this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
-        ...
-        add(TossPaymentsPlugin.class);
-    });
-}
-```
-
-### 2. Webview를 위한 액티비티 추가하기
+### 1. Webview를 위한 액티비티 추가하기
 `AndroidManifest.xml` 파일(android/app/src/main에 위치)에 아임포트 액티비티를 아래와 같이 추가해주세요.
 
 ```html
