@@ -26,7 +26,7 @@ public class TossPaymentsActivity extends Activity {
         Integer identifier = application.getResources().getIdentifier("toss_payments_activity", "layout", packageName);
         setContentView(identifier);
 
-        webview = (WebView) findViewById(R.id.webview);
+        webview = (WebView) findViewById(R.id.toss_webview);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);

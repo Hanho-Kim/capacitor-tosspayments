@@ -21,7 +21,7 @@ public class TossPaymentsPlugin extends Plugin {
 
     static final int REQUEST_CODE = 6018;
     static final int RESULT_CODE_FOR_BACK = 4783;
-    static final String WEBVIEW_PATH = "file:///android_asset/html/webview_source.html";
+    static final String WEBVIEW_PATH = "file:///android_asset/html/nf_toss_webview_source.html";
 
     @PluginMethod
     public void echo(PluginCall call) {
