@@ -13,7 +13,7 @@
 아래 명령어를 통해 캐패시터 모듈을 귀하의 캐패시터 프로젝트에 추가할 수 있습니다.
 
 ```
-$ npm install capacitor-tosspayments --save
+$ npm install @nerdfrenzs/capacitor-tosspayments --save
 ```
 
 앱을 빌드하고 빌드한 내용을 네이티브 코드에 카피합니다.
@@ -109,26 +109,66 @@ https://github.com/iamport/iamport-capacitor/blob/master/manuals/SETTING_ANDROID
 ## 사용방법
 
 ``` typescript
-import { TossPayments } from 'capacitor-tosspayments';
+import { TossPayments, TossPaymentsCapacitor } from '@nerdfrenzs/capacitor-tosspayments';
 ...
 const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
-const tossPayments = new TossPayments(clientKey);
 
-await tossPayments.requestPayment('카드', {
-      amount: 15000,
-      orderId: 'WyzNriVXGrKJOZHx-g2ks',
-      orderName: '토스 티셔츠 외 2건',
-      customerName: '박토스',
-      successCallback: (url:string)=>{
-        console.log('결제 성공: ' + decodeURIComponent(url));
-      },
-      failCallback: (url:string)=>{
-        console.log('결제 실패: ' + decodeURIComponent(url));
-      },
-    });
+if (Capacitor.isNativePlatform()) {
+// NATIVE
+        const tossPayments = new TossPayments(clientKey);
+        await new Promise(async (resolve) => {
+          await tossPayments.requestPayment("카드", {
+            amount: productResult.amount,
+            orderId: uuid.v4(),
+            orderName: productResult.productName,
+            successCallback: (res: any) => {
+              const result = urlQueryString(res);
+              paymentResult = result;
+              resolve(true);
+            },
+            failCallback: (res: any) => {
+              const result = urlQueryString(res);
+              let message = result.message;
+              if (result.code === "user_close") {
+                message = "결제를 취소하였습니다.";
+              }
+              console.log(decodeURI(message))
+              resolve(false);
+            },
+          });
+        });
+      } else {
+      // PC
+        if (!Capacitor.isNativePlatform() && isPlatform("desktop")) {
+          const paymentWidget = await TossPaymentsCapacitor.initialize({
+            clientKey: clientKey,
+          });
+          if (paymentWidget) {
+            await paymentWidget
+              .requestPayment("카드", {
+                amount: productResult.amount,
+                orderId: uuid.v4(),
+                orderName: productResult.productName,
+              })
+              .then((result: any) => {
+                paymentResult = result;
+              })
+              .catch((error: any) => {
+                commonStore.toastMessage(
+                  error.message,
+                  4000,
+                  "bottom",
+                  "ddoit-toast-chat"
+                );
+              });
+          }
+        } else {
+          console.log("Cannot use in mobile web")
+      }
 
 ```
 
 ## 주의사항
 * iOS / Android 환경에서 플러그인 웹뷰와 Ionic 웹뷰간의 소통을 위해, 토스페이먼츠 SDK의 `successUrl`과 `failUrl` 파라미터가 `successCallback`과 `failCallback` 형태의 콜백함수(필수)로 대체됩니다.
-* Web 환경(Unimplemented)에서는, 토스페이먼츠 JS SDK와 동일하게, `successUrl`과 `failUrl` 파라미터로 작동되며, `successCallback`과 `failCallback`은 무시됩니다.
+* Web 환경(Unimplemented)에서는, promise 방식으로 처리 되며 모바일웹에서는 Promise가 동작하지 않아 이 부분은 지원하지 않습니다.
+* urlQueryString() 함수는 리턴 받은 결과 url을 파싱하여 querystring의 값들을 추출하는 함수입니다.
