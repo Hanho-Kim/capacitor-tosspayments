@@ -1,6 +1,6 @@
 {
   "name": "@nerdfrenzs/capacitor-tosspayments",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Capacitor plugin v5 for toss payments",
   "main": "dist/plugin.js",
   "module": "dist/esm/index.js",
