@@ -44,7 +44,7 @@
     "dist/",
     "ios/Plugin/",
     "ios/Resources/",
-    "CapacitorTosspayments.podspec"
+    "NerdfrenzsCapacitorTosspayments.podspec"
   ],
   "keywords": [
     "capacitor",
